@@ -2,6 +2,8 @@
 #include <WiFi.h>
 #include "ESPAsyncWebServer.h"
 #include "ESPAsyncWiFiManager.h"  
+#include <ESPAsyncWebServer.h>
+#include "WebSerial.h"
 
 //variables
 AsyncWebServer server(80);
@@ -268,6 +270,8 @@ void setup() {
   Serial.println("local ip");
   Serial.println(WiFi.localIP());
 
+
+
   //server.begin();
 
   pinMode(2,OUTPUT);
@@ -315,6 +319,7 @@ void setup() {
   request->send(200, "text/plain", "Variables updated");
 });
 
+  WebSerial.begin(&server);
   server.begin();
 
 }
@@ -335,6 +340,7 @@ void loop() {
   if(!dosing){
     elapseTime++;
   }
+  WebSerial.print(".");
   //Serial.print("1,");
   if(timeToDose(elapseTime) && dosing){
     //Serial.print("1.1,");
